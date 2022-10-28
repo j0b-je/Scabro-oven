@@ -1,3 +1,4 @@
+//This is the code used currently on the slowbox
 #include "max6675.h"
 #include <AutoPID.h>
 #include <SPI.h>
