@@ -965,13 +965,13 @@ void loop()
       DebugSerial.print("Setpoint: ");
       DebugSerial.println(Setpoint);
 //((thermocouple.readCelsius() + ThermoCorrection) + (thermocouple1.readCelsius() + ThermoCorrection1) + (thermocouple2.readCelsius() + ThermoCorrection2) + (thermocouple3.readCelsius() + ThermoCorrection3) / 4) >= SetTemp + 12 || 
-      if ((((thermocouple4.readCelsius() + ThermoCorrection4) + (thermocouple5.readCelsius() + ThermoCorrection5) + (thermocouple6.readCelsius() + ThermoCorrection6) + (thermocouple7.readCelsius() + ThermoCorrection7)) / 4) >= SetTemp - 1) Setpoint = SetTemp;
+      if ((((thermocouple4.readCelsius() + ThermoCorrection4) + (thermocouple5.readCelsius() + ThermoCorrection5) + (thermocouple6.readCelsius() + ThermoCorrection6) + (thermocouple7.readCelsius() + ThermoCorrection7)) / 4) >= SetTemp - 2) Setpoint = SetTemp;
 
       //if(((thermocouple.readCelsius()+ThermoCorrection)||(thermocouple1.readCelsius()+ThermoCorrection1)||(thermocouple2.readCelsius()+ThermoCorrection2)||(thermocouple3.readCelsius()+ThermoCorrection3) >= SetTemp) Setpoint = SetTemp;
 
-      else   Setpoint = SetTemp + 6;
+      else   Setpoint = SetTemp + 8;
 
-      if ((((thermocouple4.readCelsius() + ThermoCorrection4) + (thermocouple5.readCelsius() + ThermoCorrection5) + (thermocouple6.readCelsius() + ThermoCorrection6) + (thermocouple7.readCelsius() + ThermoCorrection7)) / 4) >= SetTemp - 3) {
+      if ((((thermocouple4.readCelsius() + ThermoCorrection4) + (thermocouple5.readCelsius() + ThermoCorrection5) + (thermocouple6.readCelsius() + ThermoCorrection6) + (thermocouple7.readCelsius() + ThermoCorrection7)) / 4) >= SetTemp - 4) {
         if (TTS == false)
         {
           Setpoint = SetTemp;
