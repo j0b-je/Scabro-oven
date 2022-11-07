@@ -241,7 +241,7 @@ void setup()
 
   DebugSerial.print("Initializing SD card...");
 
- 
+
 
   while (!NextionSerial)
   {
@@ -261,7 +261,7 @@ void setup()
 
   //Nextion recieve data Temp and Time
   TotalChar = ReconW + FileName;
-   if (SD.begin())
+  if (SD.begin())
   {
     DebugSerial.println("SD card is ready to use.");
     sendCmd("page1.SDcardState.txt=\"SD card istalled\"");
@@ -320,12 +320,12 @@ void loop()
 
   if (NextionSerial.available() > 0) {
 
-    DebugSerial.print("Dataproccesing state is: ");
-    DebugSerial.println(Dataprocessing);
-    DebugSerial.print("FileNameCheck state is: ");
-    DebugSerial.println(FileNameCheck);
-
-
+    if (Dataprocessing == false) {
+      DebugSerial.print("Dataproccesing state is: ");
+      DebugSerial.println(Dataprocessing);
+      DebugSerial.print("FileNameCheck state is: ");
+      DebugSerial.println(FileNameCheck);
+    }
     /*  DebugSerial.println("OffSet form EEPROM for Thermocouples: ");
       DebugSerial.println(ThermoCorrection4);
       DebugSerial.println(ThermoCorrection5);
@@ -355,14 +355,14 @@ void loop()
       DebugSerial.print("The recieved Trash: ");
       DebugSerial.println(Trash);
       Trash = "";
-      
+
       //if (NextionSerial.available() == 0)//
-     
-        DebugSerial.println("Nextion Serial Buffer is empty");
-        sendCmd("SendTime.val=1");
-        sendCmd("t16.txt=\"Recieved Data\"");
-        Dataprocessing = true;
-  
+
+      DebugSerial.println("Nextion Serial Buffer is empty");
+      sendCmd("SendTime.val=1");
+      sendCmd("t16.txt=\"Recieved Data\"");
+      Dataprocessing = true;
+
       readString += c; //makes the string readString
     }
 
@@ -382,7 +382,7 @@ void loop()
       readString = ""; //clears variable for new input
     }
 
-    if (c == '>') {
+    if (c == '>') { //Not using fro the new communication, used for hand shake methode -> Force data all the time
       DebugSerial.println("Recieved Nexttion Data request");
       SendData = true;
       readString = ""; //clears variable for new input
@@ -400,13 +400,15 @@ void loop()
     }
 
     if (c == '@') {
+      sendCmd("StopSender.val=0"); //Send to Nextion the running state
       DebugSerial.println("A Stop command has been isued");
       sendCmd("RunningState.txt=\"Stop\""); //Send to Nextion the running state
-      sendCmd("StopSender.val=0"); //Send to Nextion the running state
+
       readString = ""; //clears variable for new input
       if (check == true) {
         myFile.println("Programm Has been stopped");
         myFile.close(); // if There is a file open it will close it
+        readString = ""; //clears variable for new input
         check = false;
       }
       sendCmd("t16.txt=\" \"");
@@ -435,9 +437,9 @@ void loop()
           if (readString.indexOf('k') > 0) T11 = n;
           if (readString.indexOf('l') > 0) T12 = n;
           if (readString.indexOf('m') > 0) T13 = n;
-          if (readString.indexOf('n') > 0) {
+          if (readString.indexOf('n') > 0) T14 = n;
+          if (readString.indexOf('o') > 0) {
             Timerecieved = true;
-            T14 = n;
             sendCmd("SendT.val=1");
             sendCmd("SendTime.val=0");
             TimeLock = false;
@@ -456,14 +458,13 @@ void loop()
         if (readString.indexOf('K') > 0) Temp11 = n;
         if (readString.indexOf('L') > 0) Temp12 = n;
         if (readString.indexOf('M') > 0) Temp13 = n;
-        if (readString.indexOf('N') > 0) {
+        if (readString.indexOf('N') > 0) Temp14 = n;
+        if (readString.indexOf('O') > 0) {
           Temprecieved = true;
-          Temp14 = n;
           sendCmd("vis b5,1");
           sendCmd("t16.txt=\" \"");
           Dataprocessing = false;
           sendCmd("StopSend.val=0");
-          
         }
 
         if (readString.indexOf(':') > 0) {
@@ -535,15 +536,15 @@ void loop()
 
     // current temperature with compensation
 
-      sendCmd("OffSet1.txt=" + OffSetN1);
-      sendCmd("OffSet2.txt=" + OffSetN2);
-      sendCmd("OffSet3.txt=" + OffSetN3);
-      sendCmd("OffSet4.txt=" + OffSetN4);
-  
-      sendCmd("THCC1.val=" + TempOffSet1);
-      sendCmd("THCC2.val=" + TempOffSet2);
-      sendCmd("THCC3.val=" + TempOffSet3);
-      sendCmd("THCC4.val=" + TempOffSet4);
+    sendCmd("OffSet1.txt=" + OffSetN1);
+    sendCmd("OffSet2.txt=" + OffSetN2);
+    sendCmd("OffSet3.txt=" + OffSetN3);
+    sendCmd("OffSet4.txt=" + OffSetN4);
+
+    sendCmd("THCC1.val=" + TempOffSet1);
+    sendCmd("THCC2.val=" + TempOffSet2);
+    sendCmd("THCC3.val=" + TempOffSet3);
+    sendCmd("THCC4.val=" + TempOffSet4);
 
     if (c == 'A') {
       ThermoVal1 ++;
@@ -964,7 +965,7 @@ void loop()
       DebugSerial.println(Time);
       DebugSerial.print("Setpoint: ");
       DebugSerial.println(Setpoint);
-//((thermocouple.readCelsius() + ThermoCorrection) + (thermocouple1.readCelsius() + ThermoCorrection1) + (thermocouple2.readCelsius() + ThermoCorrection2) + (thermocouple3.readCelsius() + ThermoCorrection3) / 4) >= SetTemp + 12 || 
+      //((thermocouple.readCelsius() + ThermoCorrection) + (thermocouple1.readCelsius() + ThermoCorrection1) + (thermocouple2.readCelsius() + ThermoCorrection2) + (thermocouple3.readCelsius() + ThermoCorrection3) / 4) >= SetTemp + 12 ||
       if ((((thermocouple4.readCelsius() + ThermoCorrection4) + (thermocouple5.readCelsius() + ThermoCorrection5) + (thermocouple6.readCelsius() + ThermoCorrection6) + (thermocouple7.readCelsius() + ThermoCorrection7)) / 4) >= SetTemp - 2) Setpoint = SetTemp;
 
       //if(((thermocouple.readCelsius()+ThermoCorrection)||(thermocouple1.readCelsius()+ThermoCorrection1)||(thermocouple2.readCelsius()+ThermoCorrection2)||(thermocouple3.readCelsius()+ThermoCorrection3) >= SetTemp) Setpoint = SetTemp;
@@ -1076,7 +1077,8 @@ void loop()
     mytext = "\"" + message + "\"";
     //myvalue = "\"" + Tempvalue + "\"";
 
-    if (SendData == true && currentMillis - SendTemp >= 1500)
+    if (SendData == true && currentMillis - SendTemp >= 1500) //used for Hand shake methode
+      //if (currentMillis - SendTemp >= 1500 && Dataprocessing == false)
     {
       TimeLeftRun = (TotalRampTime + TimeSum) - ((currentMillis - ToTimeLeft) / 60000);
 
