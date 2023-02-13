@@ -1027,11 +1027,11 @@ void loop()
       DebugSerial.println(Setpoint);
       //((thermocouple.readCelsius() + ThermoCorrection) + (thermocouple1.readCelsius() + ThermoCorrection1) + (thermocouple2.readCelsius() + ThermoCorrection2) + (thermocouple3.readCelsius() + ThermoCorrection3) / 4) >= SetTemp + 12 ||
       
-      if ((((thermocouple2.readCelsius() + ThermoCorrection2) + (thermocouple3.readCelsius() + ThermoCorrection3) + (thermocouple4.readCelsius() + ThermoCorrection4) + (thermocouple5.readCelsius() + ThermoCorrection5) + (thermocouple6.readCelsius() + ThermoCorrection6) + (thermocouple7.readCelsius() + ThermoCorrection7)) / 6) >= SetTemp - 1) Setpoint = SetTemp;
+      if ((((thermocouple2.readCelsius() + ThermoCorrection2) + (thermocouple3.readCelsius() + ThermoCorrection3) + (thermocouple4.readCelsius() + ThermoCorrection4) + (thermocouple5.readCelsius() + ThermoCorrection5) + (thermocouple6.readCelsius() + ThermoCorrection6) + (thermocouple7.readCelsius() + ThermoCorrection7)) / 6) >= SetTemp - 2) Setpoint = SetTemp;
 
       //if(((thermocouple.readCelsius()+ThermoCorrection)||(thermocouple1.readCelsius()+ThermoCorrection1)||(thermocouple2.readCelsius()+ThermoCorrection2)||(thermocouple3.readCelsius()+ThermoCorrection3) >= SetTemp) Setpoint = SetTemp;
 
-      else   Setpoint = SetTemp + 5; //deze instelling maakt het mogelijk om sneller te verwarmen VB set temp = 40 deze instelling maakt het +5 dus 45 graden.
+      else   Setpoint = SetTemp + 8; //deze instelling maakt het mogelijk om sneller te verwarmen VB set temp = 40 deze instelling maakt het +5 dus 45 graden.
 
       if ((((thermocouple2.readCelsius() + ThermoCorrection2) + (thermocouple3.readCelsius() + ThermoCorrection3) + (thermocouple4.readCelsius() + ThermoCorrection4) + (thermocouple5.readCelsius() + ThermoCorrection5) + (thermocouple6.readCelsius() + ThermoCorrection6) + (thermocouple7.readCelsius() + ThermoCorrection7)) / 6) >= SetTemp - 2) {
         if (TTS == false)
@@ -1079,27 +1079,27 @@ void loop()
     // Max = 255 Nul = 0 
     if (SpeedSet == 1) {
       RampTime = 1;
-      if (Setpoint >= 110) myPID.setOutputRange(0, 120);
-      if (Setpoint >= 100) myPID.setOutputRange(0, 100);
-      if (Setpoint >= 90) myPID.setOutputRange(0, 80);
-      if (Setpoint >= 70) myPID.setOutputRange(0, 60);
+      if (Setpoint >= 110) myPID.setOutputRange(0, 180);
+      if (Setpoint >= 100) myPID.setOutputRange(0, 160);
+      if (Setpoint >= 90) myPID.setOutputRange(0, 140);
+      if (Setpoint >= 70) myPID.setOutputRange(0, 120);
       else myPID.setOutputRange(0, 80);
     }
     if (SpeedSet == 2) {
       RampTime = 2;
-      if (Setpoint >= 110) myPID.setOutputRange(0, 170);
-      if (Setpoint >= 100) myPID.setOutputRange(0, 160);
-      if (Setpoint >= 90) myPID.setOutputRange(0, 140);
-      if (Setpoint >= 70) myPID.setOutputRange(0, 120);
-      else myPID.setOutputRange(0, 100);
+      if (Setpoint >= 110) myPID.setOutputRange(0, 220);
+      if (Setpoint >= 100) myPID.setOutputRange(0, 200);
+      if (Setpoint >= 90) myPID.setOutputRange(0, 180);
+      if (Setpoint >= 70) myPID.setOutputRange(0, 160);
+      else myPID.setOutputRange(0, 140);
     }
     if (SpeedSet == 3) {
       RampTime = 4;
-      if (Setpoint >= 110) myPID.setOutputRange(0, 180);
-      if (Setpoint >= 100) myPID.setOutputRange(0, 160);
-      if (Setpoint >= 90) myPID.setOutputRange(0, 140);
-      if (Setpoint >= 70) myPID.setOutputRange(0, 130);
-      else myPID.setOutputRange(0, 120);
+      if (Setpoint >= 110) myPID.setOutputRange(0, 255);
+      if (Setpoint >= 100) myPID.setOutputRange(0, 240);
+      if (Setpoint >= 90) myPID.setOutputRange(0, 220);
+      if (Setpoint >= 70) myPID.setOutputRange(0, 190);
+      else myPID.setOutputRange(0, 170);
     }
 
     else {
