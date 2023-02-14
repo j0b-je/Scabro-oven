@@ -1027,13 +1027,15 @@ void loop()
       DebugSerial.println(Setpoint);
       //((thermocouple.readCelsius() + ThermoCorrection) + (thermocouple1.readCelsius() + ThermoCorrection1) + (thermocouple2.readCelsius() + ThermoCorrection2) + (thermocouple3.readCelsius() + ThermoCorrection3) / 4) >= SetTemp + 12 ||
       
-      if ((((thermocouple2.readCelsius() + ThermoCorrection2) + (thermocouple3.readCelsius() + ThermoCorrection3) + (thermocouple4.readCelsius() + ThermoCorrection4) + (thermocouple5.readCelsius() + ThermoCorrection5) + (thermocouple6.readCelsius() + ThermoCorrection6) + (thermocouple7.readCelsius() + ThermoCorrection7)) / 6) >= SetTemp - 2) Setpoint = SetTemp;
+     float ThermoTotalAvg = (((thermocouple2.readCelsius() + ThermoCorrection2) + (thermocouple3.readCelsius() + ThermoCorrection3) + (thermocouple4.readCelsius() + ThermoCorrection4) + (thermocouple5.readCelsius() + ThermoCorrection5) + (thermocouple6.readCelsius() + ThermoCorrection6) + (thermocouple7.readCelsius() + ThermoCorrection7)) / 6)
+      
+     if (ThermoTotalAvg >= SetTemp - 2) Setpoint = SetTemp;
 
       //if(((thermocouple.readCelsius()+ThermoCorrection)||(thermocouple1.readCelsius()+ThermoCorrection1)||(thermocouple2.readCelsius()+ThermoCorrection2)||(thermocouple3.readCelsius()+ThermoCorrection3) >= SetTemp) Setpoint = SetTemp;
 
-      else   Setpoint = SetTemp + 8; //deze instelling maakt het mogelijk om sneller te verwarmen VB set temp = 40 deze instelling maakt het +5 dus 45 graden.
+      else   Setpoint = SetTemp + 5; //deze instelling maakt het mogelijk om sneller te verwarmen VB set temp = 40 deze instelling maakt het +5 dus 45 graden.
 
-      if ((((thermocouple2.readCelsius() + ThermoCorrection2) + (thermocouple3.readCelsius() + ThermoCorrection3) + (thermocouple4.readCelsius() + ThermoCorrection4) + (thermocouple5.readCelsius() + ThermoCorrection5) + (thermocouple6.readCelsius() + ThermoCorrection6) + (thermocouple7.readCelsius() + ThermoCorrection7)) / 6) >= SetTemp - 2) {
+      if (ThermoTotalAvg >= SetTemp - 2) {
         if (TTS == false)
         {
           Setpoint = SetTemp;
